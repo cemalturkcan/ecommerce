@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: ecommerce
+  messages:
+    basename: lang/messages
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    validate-on-migrate: true
+  datasource:
+    url: ${DB_HOST:jdbc:postgresql://localhost:5432/ecommerce}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driverClassName: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_CONNECTION:22}
+      connection-timeout: 2000
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+server:
+  port: 8080
+
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY:586B633834416E396D7436753879382F423F4428482B4C6250655367566B5970}
+      expiration: ${JWT_EXPIRATION:28800000 }
