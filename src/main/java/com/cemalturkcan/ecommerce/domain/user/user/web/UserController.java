@@ -14,16 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class UserController {
     private final UserService userService;
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public Response<UserResponse> createAdmin(
             @Valid @RequestBody CreateAdminRequest request
     ) {
         return ResponseBuilder.build(userService.createAdmin(request));
     }
-
-
 }

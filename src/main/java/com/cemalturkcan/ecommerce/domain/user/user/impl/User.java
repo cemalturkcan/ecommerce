@@ -15,11 +15,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends AbstractEntity {
-    public static final String TABLE_NAME = "users";
-    public static final String COL_EMAIL = "email";
-    public static final String COL_PASSWORD = "password";
-    public static final String COL_ROLE = "role";
-    public static final String COL_STATUS = "status";
+    public static final String TABLE_NAME = "usr";
+    private static final String COL_EMAIL = "email";
+    private static final String COL_PASSWORD = "password";
+    private static final String COL_ROLE = "role";
+    private static final String COL_STATUS = "status";
 
     @Column(name = COL_EMAIL, unique = true, nullable = false)
     private String email;

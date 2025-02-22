@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class CoreException extends RuntimeException{
+public class CoreException extends RuntimeException {
 
     private final MessageCodes code;
     private final String message;
     @Setter
     private Object[] args;
 
-    public CoreException(MessageCodes code,  Object... args) {
+    public CoreException(MessageCodes code, Object... args) {
         this.code = code;
         this.message = null;
         this.args = args;

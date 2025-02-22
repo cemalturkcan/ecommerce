@@ -29,7 +29,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         // register the JavaTimeModule, which enables Jackson to support Java 8 and higher date and time types
         mapper.registerModule(new JavaTimeModule());
         // ask Jackson to serialize dates as strings in the ISO 8601 format
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,false);
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.writeValue(response.getOutputStream(), body);
     }
 }

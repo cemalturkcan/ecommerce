@@ -16,10 +16,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product extends AbstractEntity {
-    public static final String TABLE_NAME = "products";
-    public static final String COL_NAME = "name";
-    public static final String COL_PRICE = "price";
-    public static final String COL_STOCK = "stock";
+    public static final String TABLE_NAME = "product";
+    private static final String COL_NAME = "name";
+    private static final String COL_PRICE = "price";
+    private static final String COL_STOCK = "stock";
 
     @Column(name = COL_NAME)
     private String name;

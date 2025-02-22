@@ -14,11 +14,12 @@ public class MetaResponse {
 
     private String code;
     private String description;
-    public static MetaResponse of(String code, String description){
+
+    public static MetaResponse of(String code, String description) {
         return new MetaResponse(code, description);
     }
 
-    public static MetaResponse success(){
+    public static MetaResponse success() {
         return new MetaResponse(MessageCodes.SUCCESS.getCode(), "SUCCESS");
     }
 }

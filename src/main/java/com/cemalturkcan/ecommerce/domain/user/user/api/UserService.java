@@ -6,5 +6,6 @@ import com.cemalturkcan.ecommerce.domain.user.user.web.UserResponse;
 
 public interface UserService {
     UserResponse createUser(UserRequest request);
+
     UserResponse createAdmin(CreateAdminRequest request);
 }

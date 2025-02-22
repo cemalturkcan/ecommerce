@@ -17,7 +17,7 @@ import java.util.Locale;
 
 @Slf4j
 @RestControllerAdvice
-public class RestExceptionHandler  {
+public class RestExceptionHandler {
     private final MessageSource messageSource;
 
     public RestExceptionHandler(MessageSource messageSource) {

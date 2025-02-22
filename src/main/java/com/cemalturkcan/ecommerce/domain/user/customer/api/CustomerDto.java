@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 @ToString
 public class CustomerDto implements Serializable {
-    private String id;
+    private Long id;
     private Date created;
     private Date modified;
     private String name;
