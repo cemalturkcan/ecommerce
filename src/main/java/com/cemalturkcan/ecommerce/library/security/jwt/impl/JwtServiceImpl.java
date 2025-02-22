@@ -50,23 +50,6 @@ public class JwtServiceImpl implements JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    @Override
-    public UserRole getUserPermission(String token) {
-        return extractClaim(token, claims -> UserRole.valueOf((String) claims.get("role")));
-    }
-
-    public String generateTokenWithCustomExpiration(UserDto user, Date customExpiration) {
-        Map<String, Object> extraClaims = new HashMap<>();
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .claim("role", user.getRole())
-                .setSubject(user.getId().toString())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(customExpiration)
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
 
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
