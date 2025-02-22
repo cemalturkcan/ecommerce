@@ -15,7 +15,10 @@ public enum MessageCodes {
     WRONG_CREDENTIALS("1005", "general.wrongCreds"),
 
     DATA_INTEGRITY_VIOLATION("1003", "general.dataIntegrityViolation"),
-    METHOD_NOT_ALLOWED("405", "general.methodNotAllowed");
+    METHOD_NOT_ALLOWED("405", "general.methodNotAllowed"),
+    PRODUCT_QUANTITY_CANNOT_BE_NEGATIVE("1004", "product.quantityCannotBeNegative"),
+    PRODUCT_STOCK_NOT_ENOUGH("1006", "product.stockNotEnough"),
+    PRODUCT_NOT_FOUND_IN_CART("1007", "product.notFoundInCart");
 
     private final String code;
     private final String message;

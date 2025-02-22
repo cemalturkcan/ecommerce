@@ -6,15 +6,18 @@ import com.cemalturkcan.ecommerce.domain.user.customer.api.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final ApplicationEventPublisher eventPublisher;
 
 
     @Override
+    @Transactional
     public void createCustomer(RegisterRequest request, Long userId) {
         Customer customer = new Customer();
         customer.setName(request.getName());

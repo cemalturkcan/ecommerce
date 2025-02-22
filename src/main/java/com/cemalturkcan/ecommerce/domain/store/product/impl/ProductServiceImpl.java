@@ -10,10 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -24,12 +26,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse createProduct(ProductRequest request) {
         Product product = productRepository.save(toEntity(new Product(), request));
         return toResponse(product);
     }
 
     @Override
+    @Transactional
     public ProductResponse updateProduct(ProductRequest request, Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CoreException(MessageCodes.ENTITY_NOT_FOUND, Constants.PRODUCT_EXCEPTION, id));
@@ -38,8 +42,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
+        Product product = getProductById(id);
+        productRepository.delete(product);
+    }
+
+    @Override
+    @Transactional
+    public ProductResponse checkStockAndReduceOrIncreaseStock(Long productId, int quantity) {
+        Product product = getProductById(productId);
+        if (product.getStock() < quantity) {
+            throw new CoreException(MessageCodes.PRODUCT_STOCK_NOT_ENOUGH, Constants.PRODUCT_EXCEPTION, productId);
+        }
+        product.setStock(product.getStock() - quantity);
+        productRepository.save(product);
+        return toResponse(product);
+    }
+
+    @Override
+    public void increaseStock(Long productId, Integer quantity) {
+        Product product = getProductById(productId);
+        product.setStock(product.getStock() + quantity);
+        productRepository.save(product);
+    }
+
+
+    private Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new CoreException(MessageCodes.ENTITY_NOT_FOUND, Constants.PRODUCT_EXCEPTION, productId));
     }
 
 

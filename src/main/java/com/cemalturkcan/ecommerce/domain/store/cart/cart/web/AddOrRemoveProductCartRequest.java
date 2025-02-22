@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class CartRequest {
-
-
+public class AddOrRemoveProductCartRequest {
+    private Long productId;
+    private Integer quantity;
 }

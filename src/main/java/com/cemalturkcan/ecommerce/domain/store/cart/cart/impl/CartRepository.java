@@ -2,6 +2,7 @@ package com.cemalturkcan.ecommerce.domain.store.cart.cart.impl;
 
 import com.cemalturkcan.ecommerce.domain.store.cart.cart.impl.projection.CartProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
@@ -33,5 +34,21 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
             """, nativeQuery = true)
     CartProjection findCartByCustomerId(Long customerId);
 
+
+    @Modifying
+    @Query(value = """
+            UPDATE cart
+            SET price = price + :price
+            WHERE customer_id = :customerId
+            """, nativeQuery = true)
+    void updateCartPriceBySum(Long customerId, Double price);
+
+    @Modifying
+    @Query(value = """
+            UPDATE cart
+            SET price = :price
+            WHERE customer_id = :customerId
+            """, nativeQuery = true)
+    void updateCartPrice(Long customerId, Double price);
 
 }

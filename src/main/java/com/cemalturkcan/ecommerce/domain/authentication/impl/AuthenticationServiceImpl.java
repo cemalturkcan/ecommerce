@@ -17,13 +17,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Validated
+@Transactional(readOnly = true)
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserServiceImpl userService;
     private final CustomerService customerService;
@@ -51,6 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
         UserResponse user = userService.createUser(request);
         customerService.createCustomer(request, user.getId());

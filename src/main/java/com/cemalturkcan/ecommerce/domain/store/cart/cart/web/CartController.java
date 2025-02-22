@@ -5,9 +5,7 @@ import com.cemalturkcan.ecommerce.library.rest.Response;
 import com.cemalturkcan.ecommerce.library.rest.ResponseBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/carts")
@@ -21,4 +19,26 @@ public class CartController {
         return ResponseBuilder.build(cartService.getCart());
     }
 
+
+
+    @PutMapping("/empty-cart")
+    public Response<CartResponse> emptyCart() {
+        return ResponseBuilder.build(cartService.emptyCart());
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @PostMapping
+    public Response<CartResponse> addProductToCart(
+            @RequestBody
+            AddOrRemoveProductCartRequest request) {
+        return ResponseBuilder.build(cartService.addProductToCart(request));
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @DeleteMapping
+    public Response<CartResponse> removeProductFromCart(
+            @RequestBody
+            AddOrRemoveProductCartRequest request) {
+        return ResponseBuilder.build(cartService.removeProductFromCart(request));
+    }
 }
