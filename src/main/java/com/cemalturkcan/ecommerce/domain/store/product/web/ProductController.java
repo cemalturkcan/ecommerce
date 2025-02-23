@@ -27,14 +27,14 @@ public class ProductController {
         return ResponseBuilder.build(productService.createProduct(request));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Response<ProductResponse> updateProduct(@Valid @RequestBody ProductRequest request, @PathVariable Long id) {
         return ResponseBuilder.build(productService.updateProduct(request, id));
     }
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Response<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);

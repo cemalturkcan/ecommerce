@@ -3,6 +3,7 @@ package com.cemalturkcan.ecommerce.domain.store.cart.cart.web;
 import com.cemalturkcan.ecommerce.domain.store.cart.cart.api.CartService;
 import com.cemalturkcan.ecommerce.library.rest.Response;
 import com.cemalturkcan.ecommerce.library.rest.ResponseBuilder;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,7 @@ public class CartController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('USER')")
     public Response<CartResponse> addProductToCart(
+            @Valid
             @RequestBody
             AddOrRemoveProductCartRequest request) {
         return ResponseBuilder.build(cartService.addProductToCart(request));
@@ -45,6 +47,7 @@ public class CartController {
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('USER')")
     public Response<CartResponse> removeProductFromCart(
+            @Valid
             @RequestBody
             AddOrRemoveProductCartRequest request) {
         return ResponseBuilder.build(cartService.removeProductFromCart(request));

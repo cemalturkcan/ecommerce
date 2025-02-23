@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     public UserResponse getUserByEmail(String email) {
         User user = repository.getUserByEmail(email)
-                .orElseThrow(() -> new CoreException(MessageCodes.ENTITY_NOT_FOUND, Constants.USER_EXCEPTION + email));
+                .orElseThrow(() -> new CoreException(MessageCodes.ENTITY_NOT_FOUND, Constants.USER_EXCEPTION, email));
         return toResponse(user);
     }
 
