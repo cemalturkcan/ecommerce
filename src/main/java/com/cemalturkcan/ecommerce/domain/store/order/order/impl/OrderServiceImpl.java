@@ -29,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderResponse createOrder() {
+    public OrderResponse placeOrder() {
         var cart = cartService.InactivateCart();
         Order order = new Order();
         order.setCartId(cart.getId());
@@ -44,6 +44,11 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderResponse> getOrders(Pageable pageable) {
         var customer = customerService.getCustomerByUserId(SecurityContext.getUserId());
         return toResponseList(orderRepository.findOrdersByCustomerId(customer.getId(), pageable));
+    }
+
+    @Override
+    public OrderResponse getOrderByCode(String code) {
+        return toResponse(orderRepository.findOrderByCode(code));
     }
 
     private Page<OrderResponse> toResponseList(Page<OrderProjection> ordersByCustomerId) {

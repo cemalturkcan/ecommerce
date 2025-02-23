@@ -13,29 +13,37 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
     private final CartService cartService;
 
-    @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER')")
     public Response<CartResponse> getCart() {
         return ResponseBuilder.build(cartService.getCart());
     }
 
+    @PutMapping
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public Response<CartResponse> updateCart(
+            @RequestBody
+            UpdateCartRequest request) {
+        return ResponseBuilder.build(cartService.updateCart(request));
+    }
 
 
     @PutMapping("/empty-cart")
+    @PreAuthorize("hasAnyAuthority('USER')")
     public Response<CartResponse> emptyCart() {
         return ResponseBuilder.build(cartService.emptyCart());
     }
 
-    @PreAuthorize("hasAnyAuthority('USER')")
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('USER')")
     public Response<CartResponse> addProductToCart(
             @RequestBody
             AddOrRemoveProductCartRequest request) {
         return ResponseBuilder.build(cartService.addProductToCart(request));
     }
 
-    @PreAuthorize("hasAnyAuthority('USER')")
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('USER')")
     public Response<CartResponse> removeProductFromCart(
             @RequestBody
             AddOrRemoveProductCartRequest request) {

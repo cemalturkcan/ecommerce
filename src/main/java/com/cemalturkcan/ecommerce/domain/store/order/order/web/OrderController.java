@@ -6,10 +6,8 @@ import com.cemalturkcan.ecommerce.library.rest.ResponseBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders")
@@ -18,13 +16,21 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('USER')")
     public Response<Page<OrderResponse>> getProducts(Pageable pageable) {
         return ResponseBuilder.build(orderService.getOrders(pageable));
     }
 
+    @GetMapping("/{code}")
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public Response<OrderResponse> getOrder(@PathVariable String code) {
+        return ResponseBuilder.build(orderService.getOrderByCode(code));
+    }
+
 
     @PostMapping
-    public Response<OrderResponse> createOrder() {
-        return ResponseBuilder.build(orderService.createOrder());
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public Response<OrderResponse> placeOrder() {
+        return ResponseBuilder.build(orderService.placeOrder());
     }
 }

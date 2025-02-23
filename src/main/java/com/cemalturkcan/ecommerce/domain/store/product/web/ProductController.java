@@ -21,21 +21,21 @@ public class ProductController {
         return ResponseBuilder.build(productService.getProducts(pageable));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Response<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
         return ResponseBuilder.build(productService.createProduct(request));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Response<ProductResponse> updateProduct(@Valid @RequestBody ProductRequest request, @PathVariable Long id) {
         return ResponseBuilder.build(productService.updateProduct(request, id));
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Response<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseBuilder.buildSuccessResponse();

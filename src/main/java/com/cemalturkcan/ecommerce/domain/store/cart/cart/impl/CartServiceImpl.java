@@ -3,8 +3,10 @@ package com.cemalturkcan.ecommerce.domain.store.cart.cart.impl;
 import com.cemalturkcan.ecommerce.domain.store.cart.cart.api.CartService;
 import com.cemalturkcan.ecommerce.domain.store.cart.cart.web.AddOrRemoveProductCartRequest;
 import com.cemalturkcan.ecommerce.domain.store.cart.cart.web.CartResponse;
+import com.cemalturkcan.ecommerce.domain.store.cart.cart.web.UpdateCartRequest;
 import com.cemalturkcan.ecommerce.domain.store.cart.cartproduct.api.CartProductService;
 import com.cemalturkcan.ecommerce.domain.store.cart.cartproduct.web.CartProductResponse;
+import com.cemalturkcan.ecommerce.domain.user.customer.api.CustomerDto;
 import com.cemalturkcan.ecommerce.domain.user.customer.api.CustomerService;
 import com.cemalturkcan.ecommerce.domain.user.customer.impl.CustomerCreatedEvent;
 import com.cemalturkcan.ecommerce.library.ObjectConverter;
@@ -51,9 +53,8 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public CartResponse emptyCart() {
         var customer = customerService.getCustomerByUserId(SecurityContext.getUserId());
-        cartProductService.emptyCart(customer.getId());
-        cartRepository.updateCartPrice(customer.getId(), 0.0);
-        return toResponse(cartRepository.findCartByCustomerId(customer.getId(), CartStatus.ACTIVE.name()));
+         emptyCartBase(customer.getId());
+         return getCart();
     }
 
     @Override
@@ -69,18 +70,37 @@ public class CartServiceImpl implements CartService {
         return toResponse(cartRepository.findCartByCustomerId(customer.getId(), CartStatus.INACTIVE.name()));
     }
 
-    private CartResponse addOrRemoveProductToCart(AddOrRemoveProductCartRequest request, int quantity) {
+    @Override
+    @Transactional
+    public CartResponse updateCart(UpdateCartRequest request) {
         var customer = customerService.getCustomerByUserId(SecurityContext.getUserId());
-        var customerCartId = cartRepository.findCartByCustomerIdGetId(customer.getId(), CartStatus.ACTIVE.name());
-        var price = cartProductService.addOrRemoveProductToCart(customerCartId, request.getProductId(), quantity);
-        cartRepository.updateCartPriceBySum(customer.getId(), price);
-        return toResponse(cartRepository.findCartByCustomerId(customer.getId(), CartStatus.ACTIVE.name()));
+        emptyCartBase(customer.getId());
+        request.getProducts().forEach(p -> addOrRemoveProductToCartBase(customer.getId(), p, p.getQuantity()));
+        return getCart();
     }
 
     @EventListener
     @Transactional
     public void handleCustomerCreatedEvent(CustomerCreatedEvent event) {
         createCart(event.getCustomerId());
+    }
+
+    private CartResponse addOrRemoveProductToCart(AddOrRemoveProductCartRequest request, int quantity) {
+        var customer = customerService.getCustomerByUserId(SecurityContext.getUserId());
+        addOrRemoveProductToCartBase(customer.getId(), request, quantity);
+        return toResponse(cartRepository.findCartByCustomerId(customer.getId(), CartStatus.ACTIVE.name()));
+    }
+
+    private void addOrRemoveProductToCartBase(Long customerId, AddOrRemoveProductCartRequest request, int quantity) {
+        var customerCartId = cartRepository.findCartByCustomerIdGetId(customerId, CartStatus.ACTIVE.name());
+        var price = cartProductService.addOrRemoveProductToCart(customerCartId, request.getProductId(), quantity);
+        cartRepository.updateCartPriceBySum(customerId, price);
+    }
+
+    private void emptyCartBase(Long customerId) {
+        var customerCartId = cartRepository.findCartByCustomerIdGetId(customerId, CartStatus.ACTIVE.name());
+        cartProductService.emptyCart(customerCartId);
+        cartRepository.updateCartPrice(customerId, 0.0);
     }
 
     private void createCart(Long customerId) {
@@ -90,6 +110,7 @@ public class CartServiceImpl implements CartService {
         cart.setStatus(CartStatus.ACTIVE);
         cartRepository.save(cart);
     }
+
 
     private CartResponse toResponse(CartProjection cartProjection) {
         return CartResponse.builder()
