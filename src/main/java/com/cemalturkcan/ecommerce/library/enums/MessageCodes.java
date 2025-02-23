@@ -18,7 +18,8 @@ public enum MessageCodes {
     METHOD_NOT_ALLOWED("405", "general.methodNotAllowed"),
     PRODUCT_QUANTITY_CANNOT_BE_NEGATIVE("1004", "product.quantityCannotBeNegative"),
     PRODUCT_STOCK_NOT_ENOUGH("1006", "product.stockNotEnough"),
-    PRODUCT_NOT_FOUND_IN_CART("1007", "product.notFoundInCart");
+    PRODUCT_NOT_FOUND_IN_CART("1007", "product.notFoundInCart"),
+    CART_IS_EMPTY("1008", "cart.isEmpty"),;
 
     private final String code;
     private final String message;

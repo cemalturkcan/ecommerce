@@ -1,4 +1,4 @@
-package com.cemalturkcan.ecommerce.domain.store.cart.cart.impl.projection;
+package com.cemalturkcan.ecommerce.domain.store.cart.cart.impl;
 
 
 public interface CartProjection {

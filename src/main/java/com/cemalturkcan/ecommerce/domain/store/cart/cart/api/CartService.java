@@ -4,7 +4,6 @@ import com.cemalturkcan.ecommerce.domain.store.cart.cart.web.AddOrRemoveProductC
 import com.cemalturkcan.ecommerce.domain.store.cart.cart.web.CartResponse;
 
 public interface CartService {
-
     CartResponse getCart();
 
     CartResponse addProductToCart(AddOrRemoveProductCartRequest request);
@@ -12,4 +11,6 @@ public interface CartService {
     CartResponse removeProductFromCart(AddOrRemoveProductCartRequest request);
 
     CartResponse emptyCart();
+
+    CartResponse InactivateCart();
 }
